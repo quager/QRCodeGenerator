@@ -99,7 +99,7 @@ namespace QRCodeGenerator
         private const int VersionYPosition = 11;
         private const int SearchPatternSize = 7;
         private const int DefaultModuleSize = 4;
-        private const int DefaultCodeSize = 500;
+        private const int DefaultImageSize = 500;
         private const Level DefaultCorrectionLevel = Level.M;
 
         public event Action OnImageUpdated;
@@ -112,6 +112,8 @@ namespace QRCodeGenerator
 
         public int FreeSpace { get; set; } = 2;
 
+        public int ImageSize { get; set; } = DefaultImageSize;
+
         public int Size => (Version - 1) * CodeInfo.DeltaWidth + CodeInfo.StartWidth;
 
         public bool MaskOnly { get; set; }
@@ -121,8 +123,6 @@ namespace QRCodeGenerator
         public BitmapSource Image { get; private set; }
 
         public Palette CodePalette { get; } = new Palette();
-
-        public int CodeSize { get; set; } = DefaultCodeSize;
 
         public Level CorrectionLevel { get; set; } = DefaultCorrectionLevel;
 
@@ -467,7 +467,7 @@ namespace QRCodeGenerator
         private BitmapSource Scaling(Color?[,] data)
         {
             int formatBytes = 4;
-            int moduleSize = (int)Math.Truncate(CodeSize / (Size + FreeSpace * 2.0));
+            int moduleSize = (int)Math.Truncate(ImageSize / (Size + FreeSpace * 2.0));
             Logger.WriteLog($"Scaling module size: {moduleSize}");
 
             if (moduleSize == 0)
